@@ -25,7 +25,6 @@ This project consists of:
 │       └── auto-commit.yml    # GitHub Actions workflow
 ├── bot-auto-commit.py         # Python script for updates
 ├── log.txt                    # Generated log file (auto-created)
-└── README-auto-commit.md      # This file
 ```
 
 ## Files Description
