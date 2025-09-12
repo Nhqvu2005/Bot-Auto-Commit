@@ -276,6 +276,3 @@ git commit -m "Daily automated update: $(date +'%Y-%m-%d %H:%M:%S')"
 - No sensitive information should be included in the log file
 - The workflow runs with standard GitHub Actions permissions
 
-## License
-
-This project is open source and available under the [MIT License](LICENSE).
