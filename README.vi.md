@@ -271,7 +271,3 @@ git commit -m "Cập nhật tự động hàng ngày: $(date +'%Y-%m-%d %H:%M:%S
 - Bot sử dụng user `github-actions[bot]` có sẵn của GitHub để commit
 - Không nên bao gồm thông tin nhạy cảm trong file log
 - Workflow chạy với quyền GitHub Actions tiêu chuẩn
-
-## Giấy phép
-
-Dự án này là mã nguồn mở và có sẵn dưới [MIT License](LICENSE).
