@@ -25,7 +25,6 @@ Dự án này bao gồm:
 │       └── auto-commit.yml    # Workflow GitHub Actions
 ├── bot-auto-commit.py         # Script Python để cập nhật
 ├── log.txt                    # File log được tạo tự động
-└── README-auto-commit.vi.md   # File này
 ```
 
 ## Mô tả các file
