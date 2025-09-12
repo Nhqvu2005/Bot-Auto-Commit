@@ -1,6 +1,6 @@
 # Bot Auto Commit
 
-[README Tiếng Việt](README-auto-commit.vi.md)
+[README Tiếng Việt](README.vi.md)
 
 A simple automation bot that automatically commits changes to a repository on a daily schedule using GitHub Actions.
 
