@@ -59,9 +59,6 @@ target_files = ["daily_log.txt", "progress.md", "inspiration.txt"]
 ist = pytz.timezone('Asia/Kolkata')
 now = datetime.datetime.now(ist)
 weekday = now.weekday()
-if weekday == 6:  # Sunday
-    print("🛌 Sunday! Skipping commits.")
-    exit()
 
 date_key = now.strftime('%Y-%m-%d')
 timestamp = now.strftime('%Y-%m-%d %I:%M:%S %p')  # 12hr format with AM/PM
