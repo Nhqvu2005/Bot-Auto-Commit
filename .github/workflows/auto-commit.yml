@@ -27,7 +27,7 @@ jobs:
 
       - name: Run commit script
         run: |
-          python3 commit.py
+          python3 bot-auto-commit.py
 
       - name: Stage files if changed (pre-pull)
         run: |
