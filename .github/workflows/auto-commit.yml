@@ -2,7 +2,7 @@ name: Bot Auto Commit
 
 on:
   schedule:
-    - cron: '0 */1 * * *'  # Runs every 3 hours
+    - cron: '0 */1 * * *'  # Runs every 1 hour
   workflow_dispatch:  # Allows manual trigger
 
 jobs:
