@@ -1,55 +1,28 @@
-name: Natural GitHub Activity Bot
-
+name: Bot Auto Commit
 on:
   schedule:
-    - cron: '0 */1 * * *'
-  workflow_dispatch:
+    - cron: '0 */1 * * *'  # Runs every 1 hour
+  workflow_dispatch:     # Allows manual trigger
 
 jobs:
-  commit:
+  update-file:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+      
+      - name: Set Up Python
+        uses: actions/setup-python@v3
         with:
-          fetch-depth: 0  # Important for rebase and push
-
-      - name: Set up Git identity as TRahulsingh
+          python-version: '3.x'
+      
+      - name: Run Update Script
+        run: python bot-auto-commit.py
+      
+      - name: Commit and Push Changes
         run: |
-          git config user.name "TRahulsingh"
-          git config user.email "181671845+TRahulsingh@users.noreply.github.com"
-
-      - name: Install Python & pytz
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y python3 python3-pip
-          pip install pytz
-
-      - name: Run commit script
-        run: |
-          python3 bot-auto-commit.py
-
-      - name: Stage files if changed (pre-pull)
-        run: |
-          if [ -n "$(git status --porcelain)" ]; then
-            echo "📌 Pre-pull changes found. Committing..."
-            git add .
-            git commit -m "📌 Pre-pull auto-commit to avoid rebase error" || echo "Nothing to commit"
-          else
-            echo "✅ No local changes to stage."
-          fi
-
-      - name: Pull latest changes before pushing
-        run: |
-          git pull origin main --rebase
-
-      - name: Push if commits are ahead
-        run: |
-          AHEAD=$(git rev-list --count origin/main..HEAD)
-          echo "Local branch is ahead by $AHEAD commit(s)."
-          if [ $AHEAD -gt 0 ]; then
-            echo "🔄 Changes detected. Pushing..."
-            git push origin main
-          else
-            echo "✅ No new commits to push."
-          fi
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "GitHub Action Bot"
+          git add log.txt
+          git commit -m "Automated update: $(date +'%Y-%m-%d %H:%M:%S')"
+          git push
