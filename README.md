@@ -93,3 +93,8 @@ By default, commits use `github-actions[bot]` and may not count toward your prof
 - To attribute commits to you, set in the workflow step:
   - `AUTHOR_NAME`: your GitHub profile name
   - `AUTHOR_EMAIL`: your verified email or `yourusername@users.noreply.github.com`
+  
+How to find them:
+- AUTHOR_NAME: GitHub → Settings → Profile → Name (or use your username if empty).
+- AUTHOR_EMAIL (noreply): GitHub → Settings → Emails → copy the address ending with `@users.noreply.github.com`.
+- AUTHOR_EMAIL (real email): must be verified on your GitHub account. If you keep email private, prefer the noreply address.
