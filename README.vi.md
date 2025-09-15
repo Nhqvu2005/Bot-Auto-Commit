@@ -92,4 +92,9 @@ Mặc định commit sẽ đứng tên `github-actions[bot]` và có thể khôn
 - Để commit đứng tên bạn, đặt biến:
   - `AUTHOR_NAME`: tên hiển thị GitHub của bạn
   - `AUTHOR_EMAIL`: email đã xác thực hoặc `yourusername@users.noreply.github.com`
+  
+Cách lấy:
+- AUTHOR_NAME: GitHub → Settings → Profile → Name (không có thì dùng `username`).
+- AUTHOR_EMAIL (noreply): GitHub → Settings → Emails → sao chép địa chỉ kết thúc bằng `@users.noreply.github.com`.
+- AUTHOR_EMAIL (email thật): phải là email đã xác thực trong tài khoản GitHub. Nếu bật ẩn email, nên dùng địa chỉ noreply.
 
