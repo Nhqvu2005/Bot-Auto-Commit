@@ -73,3 +73,23 @@ $env:REPO_NAME="AnotherRepoName"
 ### Notes
 - For protected branches, commit via another branch and open a PR.
 - The script sleeps 2 seconds between commits to avoid rate limits; adjust as needed.
+
+## Run automatically on GitHub (cron)
+
+This repo includes a workflow at `.github/workflows/daily.yml` that runs daily at 00:00 UTC.
+
+### Enable and trigger
+- Push this repo to GitHub and enable Actions.
+- The workflow will run on schedule and can also be triggered manually.
+
+### Configure
+- Change frequency: edit the `cron` in `.github/workflows/daily.yml`.
+  - Example 17:00 Vietnam (UTC+7): `0 10 * * *`.
+- Change number of updates per run: set `TIMES` in the `Run bot-auto-commit` step.
+- Default branch: set `REPO_BRANCH` (e.g., `main` or `master`).
+
+### Use your identity (optional)
+By default, commits use `github-actions[bot]` and may not count toward your profile contributions.
+- To attribute commits to you, set in the workflow step:
+  - `AUTHOR_NAME`: your GitHub profile name
+  - `AUTHOR_EMAIL`: your verified email or `yourusername@users.noreply.github.com`
