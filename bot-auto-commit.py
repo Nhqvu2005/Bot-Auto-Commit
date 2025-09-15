@@ -93,11 +93,16 @@ def put_file_content(owner: str, repo: str, path: str, content_text: str, commit
     sha = get_file_sha(owner, repo, path, token, branch)
     content_b64 = base64.b64encode(content_text.encode("utf-8")).decode("utf-8")
     url = f"{GITHUB_API}/repos/{owner}/{repo}/contents/{path}"
+    author_name = os.environ.get("AUTHOR_NAME")
+    author_email = os.environ.get("AUTHOR_EMAIL")
     payload = {
-        "message": commit_message,
-        "content": content_b64,
-        "branch": branch
+    "message": commit_message,
+    "content": content_b64,
+    "branch": branch
     }
+    if author_name and author_email:
+        payload["author"] = {"name": author_name, "email": author_email}
+        payload["committer"] = {"name": author_name, "email": author_email}
     if sha:
         payload["sha"] = sha
     status, resp = github_request("PUT", url, token, payload)
@@ -136,7 +141,19 @@ def main():
     path_in_repo = "log.txt"
 
     # Số lần sửa (tạo commit). Mỗi lần sẽ ghi 1 dòng timestamp, xoá hết nội dung cũ.
-    times = 20
+    times_env = os.environ.get("TIMES")
+    if times_env is not None:
+        try:
+            times = int(times_env)
+        except Exception:
+            print("TIMES không hợp lệ. Vui lòng đặt TIMES là số nguyên.", file=sys.stderr)
+            sys.exit(1)
+    else:
+        try:
+            times = int(input("Nhập số lần sửa file log.txt: ").strip())
+        except Exception:
+            print("Giá trị không hợp lệ. Vui lòng nhập số nguyên.", file=sys.stderr)
+            sys.exit(1)
     if times <= 0:
         print("Số lần phải > 0.", file=sys.stderr)
         sys.exit(1)
@@ -156,7 +173,7 @@ def main():
         )
         print(f"Đã commit {i}/{times}: {resp.get('commit', {}).get('sha', '')}")
         # Nghỉ nhẹ để tránh giới hạn tốc độ/abuse (có thể giảm xuống 1-2s)
-        time.sleep(5)
+        time.sleep(2)
 
 def auto_detect_owner(token: str, repo_name: str) -> str:
     """Tự động xác định owner của repo bằng token.
