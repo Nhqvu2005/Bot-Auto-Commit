@@ -73,3 +73,23 @@ $env:REPO_NAME="TenRepoKhac"
 - Nếu repo bật branch protection, có thể cần commit qua nhánh khác rồi mở PR.
 - Script nghỉ 2 giây giữa các commit để tránh giới hạn tốc độ; có thể điều chỉnh.
 
+## Chạy tự động trên GitHub (cron)
+
+Repo đã có sẵn workflow tại `.github/workflows/daily.yml` chạy hằng ngày lúc 00:00 UTC.
+
+### Bật và chạy
+- Push repo lên GitHub và bật Actions.
+- Workflow sẽ tự chạy theo lịch, cũng có thể chạy thủ công (Run workflow).
+
+### Cấu hình
+- Đổi tần suất: sửa `cron` trong `.github/workflows/daily.yml`.
+  - Ví dụ chạy 17:00 Việt Nam (UTC+7): `0 10 * * *`.
+- Đổi số lần cập nhật mỗi lượt chạy: đặt `TIMES` trong bước “Run bot-auto-commit”.
+- Nhánh mặc định: đặt `REPO_BRANCH` (ví dụ `main` hoặc `master`).
+
+### Dùng danh tính của bạn (tuỳ chọn)
+Mặc định commit sẽ đứng tên `github-actions[bot]` và có thể không tính vào đóng góp cá nhân.
+- Để commit đứng tên bạn, đặt biến:
+  - `AUTHOR_NAME`: tên hiển thị GitHub của bạn
+  - `AUTHOR_EMAIL`: email đã xác thực hoặc `yourusername@users.noreply.github.com`
+
