@@ -136,7 +136,7 @@ def main():
     path_in_repo = "log.txt"
 
     # Số lần sửa (tạo commit). Mỗi lần sẽ ghi 1 dòng timestamp, xoá hết nội dung cũ.
-    times_env = 20
+    times = 20
     if times <= 0:
         print("Số lần phải > 0.", file=sys.stderr)
         sys.exit(1)
