@@ -1,100 +1,159 @@
-## Bot Auto Commit
+# Bot Auto Commit
 
-English documentation. For Vietnamese, see [README.vi.md](README.vi.md).
+[![GitHub stars](https://img.shields.io/github/stars/Nhqvu2005/Bot-Auto-Commit?style=social)](https://github.com/Nhqvu2005/Bot-Auto-Commit/stargazers)
+[![GitHub last commit](https://img.shields.io/github/last-commit/Nhqvu2005/Bot-Auto-Commit)](https://github.com/Nhqvu2005/Bot-Auto-Commit/commits/main)
+[![License](https://img.shields.io/github/license/Nhqvu2005/Bot-Auto-Commit)](LICENSE)
+[![Python](https://img.shields.io/badge/Python-3.9+-3776AB?style=flat&logo=python&logoColor=white)](https://www.python.org/)
 
-### Overview
-This Python script updates `log.txt` in a GitHub repository a user-defined number of times. Each iteration wipes the file and writes a single timestamp line, committing via the GitHub REST API.
+> A Python script that automatically commits to your GitHub repository a user-defined number of times. Each iteration updates `log.txt` with a timestamp.
 
-### Features
-- Reads GitHub token from `GITHUB_TOKEN` env var or `token.txt`.
-- Auto-detects repo owner for `Bot-Auto-Commit` via the token (override with env vars).
-- Overwrites `log.txt` and commits to the specified branch, repeated N times.
+[English](README.md) · [Vietnamese](README.vi.md)
 
-### Requirements
-- Python 3.9+
-- A valid GitHub token
-- Permissions:
-  - Fine‑grained token (recommended):
-    - Repository access: select `Bot-Auto-Commit`
-    - Repository permissions: Contents → Read and write; Metadata → Read
-  - Classic token:
-    - Public repo: `public_repo`
-    - Private repo: `repo`
-    - If listing private org repos: `read:org`
+## ✨ Features
 
-### Setup
-1) Install dependencies:
+| Feature | Description |
+|---------|-------------|
+| 🔑 **Flexible Auth** | Read token from `GITHUB_TOKEN` env var or `token.txt` |
+| 🤖 **Auto-detect** | Automatically detect repo owner from your token |
+| ⏱️ **Rate Limit Protection** | Built-in 2-second delay between commits |
+| 🌐 **GitHub Actions** | Includes workflow for automatic daily commits |
+| 🔄 **Custom Branch** | Support for custom branch names |
+| 👤 **Identity Control** | Attribute commits to your profile |
+
+## 📋 Requirements
+
+| Requirement | Version | Notes |
+|-------------|---------|-------|
+| Python | 3.9+ | [Download](https://www.python.org/downloads/) |
+| GitHub Token | - | Fine-grained or Classic |
+
+### Token Permissions
+
+**Fine-grained token (recommended):**
+- Repository access: select your repo
+- Contents → Read and write
+- Metadata → Read
+
+**Classic token:**
+- Public repo: `public_repo`
+- Private repo: `repo`
+- For org repos: `read:org`
+
+## 🚀 Quick Start
+
+### 1. Install Dependencies
+
 ```bash
 pip install -r requirements.txt
 ```
-`requirements.txt` minimal content:
+
+**requirements.txt:**
 ```text
 python-dotenv>=1.0.1
 ```
 
-2) Configure token:
-- Env var (recommended):
-```powershell
-$env:GITHUB_TOKEN="ghp_xxx_your_token_here"
-```
-- Or create `token.txt` (same folder) with the token on one line.
+### 2. Configure Token
 
-3) Optional `.env` file:
+**Option A - Environment Variable (recommended):**
+```bash
+export GITHUB_TOKEN="ghp_xxx_your_token_here"
+```
+
+**Option B - token.txt file:**
+```bash
+echo "ghp_xxx_your_token_here" > token.txt
+```
+
+### 3. Optional Configuration
+
+Create `.env` file:
 ```env
 REPO_NAME=Bot-Auto-Commit
 REPO_BRANCH=main
+REPO_OWNER=your_username  # Optional, auto-detected
 ```
 
-### Usage
-Run the script:
-```powershell
-python .\bot-auto-commit.py
-```
-- The script auto-detects `owner` using your token. To force a value, set `REPO_OWNER`.
-- Enter how many times to update `log.txt`. Each update produces a commit.
+### 4. Run
 
-#### Customization
-- If your default branch is `master`:
-```powershell
-$env:REPO_BRANCH="master"
-```
-- If the repo name differs from `Bot-Auto-Commit`:
-```powershell
-$env:REPO_NAME="AnotherRepoName"
+```bash
+python bot-auto-commit.py
 ```
 
-### Token quick check
-- Try:
-  - `GET /user`
-  - `GET /repos/{owner}/{repo}/contents/log.txt`
-  - `PUT /repos/{owner}/{repo}/contents/log.txt`
-- If you get 403/404 due to permissions, use Classic `repo` scope or Fine‑grained Contents: Read and write.
+Enter how many times to update `log.txt`. Each update produces a commit.
 
-### Notes
-- For protected branches, commit via another branch and open a PR.
-- The script sleeps 2 seconds between commits to avoid rate limits; adjust as needed.
+## ⏰ Run Automatically on GitHub
 
-## Run automatically on GitHub (cron)
+This repo includes a GitHub Actions workflow at `.github/workflows/daily.yml` that runs daily at 00:00 UTC.
 
-This repo includes a workflow at `.github/workflows/daily.yml` that runs daily at 00:00 UTC.
+### Enable
 
-### Enable and trigger
-- Push this repo to GitHub and enable Actions.
-- The workflow will run on schedule and can also be triggered manually.
+1. Fork this repository
+2. Go to **Actions** tab
+3. Enable workflows
+4. The workflow runs automatically or can be triggered manually
 
 ### Configure
-- Change frequency: edit the `cron` in `.github/workflows/daily.yml`.
-  - Example 17:00 Vietnam (UTC+7): `0 10 * * *`.
-- Change number of updates per run: set `TIMES` in the `Run bot-auto-commit` step.
-- Default branch: set `REPO_BRANCH` (e.g., `main` or `master`).
 
-### Use your identity (optional)
-By default, commits use `github-actions[bot]` and may not count toward your profile contributions.
-- To attribute commits to you, set in the workflow step:
-  - `AUTHOR_NAME`: your GitHub profile name
-  - `AUTHOR_EMAIL`: your verified email or `yourusername@users.noreply.github.com`
-  
-How to find them:
-- AUTHOR_NAME: GitHub → Settings → Profile → Name (or use your username if empty).
-- AUTHOR_EMAIL (noreply): GitHub → Settings → Emails → copy the address ending with `@users.noreply.github.com`.
-- AUTHOR_EMAIL (real email): must be verified on your GitHub account. If you keep email private, prefer the noreply address.
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `TIMES` | Commits per run | 1 |
+| `REPO_BRANCH` | Target branch | main |
+
+### Attribute Commits to Your Profile
+
+By default, commits use `github-actions[bot]`. To attribute to yourself:
+
+```yaml
+- name: Run bot-auto-commit
+  env:
+    AUTHOR_NAME: Your Name
+    AUTHOR_EMAIL: yourusername@users.noreply.github.com
+  run: python bot-auto-commit.py
+```
+
+Find your noreply email: GitHub → Settings → Emails
+
+## 🔧 Customization
+
+### Change Frequency
+
+Edit `.github/workflows/daily.yml`:
+```yaml
+schedule:
+  - cron: '0 10 * * *'  # 17:00 UTC+7
+```
+
+### Protected Branches
+
+For protected branches, commit via a separate branch and open a PR:
+```bash
+export REPO_BRANCH="feature/temp"
+# Then create PR manually
+```
+
+## 🧪 API Quick Check
+
+Test your token permissions:
+```bash
+# Check auth
+curl -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/user
+
+# Check repo access
+curl -H "Authorization: token $GITHUB_TOKEN" \
+  https://api.github.com/repos/{owner}/{repo}/contents/log.txt
+
+# Create/update file
+curl -X PUT -H "Authorization: token $GITHUB_TOKEN" \
+  -d '{"message": "update", "content": "base64_content"}' \
+  https://api.github.com/repos/{owner}/{repo}/contents/log.txt
+```
+
+## ⚠️ Notes
+
+- Default 2-second delay between commits (rate limit protection)
+- Adjust delay in `bot-auto-commit.py` if needed
+- For private repos, ensure token has `repo` scope
+
+---
+
+README optimized with [Gingiris README Generator](https://gingiris.github.io/github-readme-generator/)
